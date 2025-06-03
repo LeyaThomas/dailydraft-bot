@@ -2,6 +2,14 @@ import logging
 import requests
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+NEWS_API_KEY = os.getenv('NEWS_API_KEY')
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -9,7 +17,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-NEWS_API_KEY = '36af2469af6749e5bbc0de88004de493'  # Replace with your NewsAPI key
+
 
 # Store articles and index globally (or use per-user dictionary if you want)
 news_articles = []
@@ -85,7 +93,7 @@ async def other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(message, parse_mode='Markdown', disable_web_page_preview=True)
 
 def main() -> None:
-    app = ApplicationBuilder().token("7856379586:AAFMh8ELc7Da719lP6DeoLvMxylyvKbOx2E").build()
+    app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("tech", tech))
